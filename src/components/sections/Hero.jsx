@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { FileText, Github, Linkedin } from 'lucide-react';
 import {
   SiReact, SiNodedotjs, SiJavascript, SiMongodb,
   SiPostgresql, SiTailwindcss, SiExpress, SiGit
@@ -45,7 +45,7 @@ const TypewriterText = () => {
           setDisplayText(word.slice(0, displayText.length + 1));
           timeoutRef.current = setTimeout(tick, 75);
         } else {
-          // Pause at full word before deleting
+
           timeoutRef.current = setTimeout(() => setIsDeleting(true), 2200);
         }
       } else {
@@ -64,7 +64,7 @@ const TypewriterText = () => {
   }, [displayText, isDeleting, currentIndex]);
 
   return (
-    // Fixed height = tallest word height, prevents layout shift
+
     <span className="inline-block" aria-live="polite" aria-atomic="true">
       <span>{displayText}</span>
       <span
@@ -82,13 +82,14 @@ const OrbitalIcon = ({ Icon, color, label, angle, radius = 140, speed = 15 }) =>
   const radians = (angle * Math.PI) / 180;
   const x = Math.cos(radians) * radius;
   const y = Math.sin(radians) * radius;
+  const duration = Math.abs(speed);
 
   return (
     <motion.div
       className="absolute"
       style={{ left: '50%', top: '50%' }}
-      animate={{ rotate: 360 }}
-      transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
+      animate={{ rotate: speed > 0 ? 360 : -360 }}
+      transition={{ duration, repeat: Infinity, ease: 'linear' }}
     >
       <div
         style={{
@@ -96,8 +97,8 @@ const OrbitalIcon = ({ Icon, color, label, angle, radius = 140, speed = 15 }) =>
         }}
       >
         <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
+          animate={{ rotate: speed > 0 ? -360 : 360 }}
+          transition={{ duration, repeat: Infinity, ease: 'linear' }}
           className="group relative"
         >
           <div
@@ -109,7 +110,7 @@ const OrbitalIcon = ({ Icon, color, label, angle, radius = 140, speed = 15 }) =>
           >
             <Icon style={{ color, fontSize: '18px' }} aria-hidden="true" />
           </div>
-          {/* Tooltip */}
+
           <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-xs text-white/60 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             {label}
           </div>
@@ -134,29 +135,25 @@ const itemVariants = {
 };
 
 const Hero = () => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
   const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const el = document.getElementById(id);
+    if (el) {
+      const yPos = el.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: yPos, behavior: 'smooth' });
+    }
   };
 
   return (
     <section
       id="hero"
-      ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'linear-gradient(180deg, #06060f 0%, #0a0a14 50%, #080816 100%)' }}
     >
-      {/* Floating orbs */}
+
       <FloatingOrbs count={4} />
 
-      {/* Dot grid pattern */}
       <div className="absolute inset-0 dot-pattern opacity-30" aria-hidden="true" />
 
-      {/* Animated gradient mesh */}
       <div
         className="absolute inset-0 opacity-20"
         aria-hidden="true"
@@ -166,30 +163,16 @@ const Hero = () => {
         }}
       />
 
-      <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 pt-24 pb-16"
-      >
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 pt-32 pb-24 md:pt-24 md:pb-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* ── Left content ── */}
+
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
             className="text-center lg:text-left"
           >
-            {/* Availability badge */}
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 mb-6">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-500/20 bg-purple-500/5 backdrop-blur-sm">
-                <Sparkles size={14} className="text-purple-400" aria-hidden="true" />
-                <span className="text-sm text-purple-300 font-medium font-display">
-                  Available for Work
-                </span>
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
-              </div>
-            </motion.div>
 
-            {/* Main heading */}
             <motion.div variants={itemVariants}>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display leading-[1.1] mb-3">
                 <span className="text-white">Hi, I'm </span>
@@ -197,7 +180,6 @@ const Hero = () => {
               </h1>
             </motion.div>
 
-            {/* Typewriter subtitle — fixed height to prevent layout shift */}
             <motion.div variants={itemVariants} className="mb-6">
               <p
                 className="text-2xl md:text-3xl font-display font-semibold text-slate-300"
@@ -207,53 +189,64 @@ const Hero = () => {
               </p>
             </motion.div>
 
-            {/* Description */}
             <motion.p
               variants={itemVariants}
               className="text-lg text-slate-400 leading-relaxed max-w-lg mb-8 mx-auto lg:mx-0"
             >
-              Passionate developer specializing in modern web applications, backend systems,
-              database design, and intelligent software solutions. Building scalable digital
-              experiences that matter.
+              Passionate developer specializing in modern web applications, backend systems, database design, and intelligent software solutions. Building scalable digital experiences that matter. Currently open to full-time roles and freelance projects.
             </motion.p>
 
-            {/* CTA Buttons */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap gap-4 justify-center lg:justify-start mb-10"
+              className="flex flex-wrap gap-3 justify-center lg:justify-start mb-10"
             >
-              <motion.button
-                onClick={() => scrollToSection('projects')}
-                id="hero-view-projects"
-                whileHover={{ scale: 1.04, boxShadow: '0 0 30px rgba(168, 85, 247, 0.4)' }}
-                whileTap={{ scale: 0.97 }}
-                className="relative px-8 py-4 rounded-full font-semibold text-white font-display overflow-hidden group"
-                style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)' }}
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  View Projects
-                  <ArrowDown size={16} className="group-hover:translate-y-1 transition-transform" aria-hidden="true" />
-                </span>
-              </motion.button>
 
-              {/* View Resume */}
               <motion.a
                 href="/Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 id="hero-resume-view"
-                aria-label="View Abdul Rauf's resume in a new tab"
-                whileHover={{ scale: 1.04, boxShadow: '0 0 24px rgba(16, 185, 129, 0.25)' }}
+                aria-label="View Abdul Rauf's resume (opens in new tab)"
+                whileHover={{ scale: 1.04, boxShadow: '0 0 30px rgba(168, 85, 247, 0.45)' }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-6 py-4 rounded-full font-semibold font-display border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 hover:border-emerald-400/50 hover:text-emerald-200 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold font-display text-white transition-all duration-200"
+                style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)' }}
               >
+                <FileText size={16} aria-hidden="true" />
                 View Resume
+              </motion.a>
+
+              <motion.a
+                href="https://github.com/mrrauf99"
+                target="_blank"
+                rel="noopener noreferrer"
+                id="hero-github-link"
+                aria-label="Visit Abdul Rauf's GitHub profile"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-semibold font-display border border-white/15 text-slate-300 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all duration-200"
+              >
+                <Github size={16} aria-hidden="true" />
+                GitHub
+              </motion.a>
+
+              <motion.a
+                href="https://www.linkedin.com/in/abdulrauf-dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                id="hero-linkedin-link"
+                aria-label="Visit Abdul Rauf's LinkedIn profile"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-semibold font-display border border-blue-500/25 text-blue-300 hover:text-blue-200 hover:border-blue-400/40 hover:bg-blue-500/5 transition-all duration-200"
+              >
+                <Linkedin size={16} aria-hidden="true" />
+                LinkedIn
               </motion.a>
             </motion.div>
 
           </motion.div>
 
-          {/* ── Right — avatar + orbital icons ── */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -261,9 +254,11 @@ const Hero = () => {
             className="relative flex items-center justify-center"
             aria-hidden="true"
           >
-            {/* Outer glow ring */}
-            <div className="relative w-72 h-72 md:w-80 md:h-80">
-              {/* Spinning gradient ring */}
+
+            <div className="transform scale-75 sm:scale-100 origin-center">
+
+              <div className="relative w-72 h-72 md:w-80 md:h-80">
+
               <motion.div
                 className="absolute inset-0 rounded-full"
                 style={{
@@ -276,7 +271,6 @@ const Hero = () => {
                 <div className="w-full h-full rounded-full bg-[#0a0a14]" />
               </motion.div>
 
-              {/* Inner pulse */}
               <motion.div
                 className="absolute inset-4 rounded-full"
                 style={{
@@ -286,17 +280,15 @@ const Hero = () => {
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               />
 
-              {/* Avatar center — real profile photo */}
               <div className="absolute inset-6 rounded-full border border-white/10 overflow-hidden">
                 <img
                   src="/Abdul_Rauf.jpeg"
-                  alt="Abdul Rauf, MERN Stack Developer"
+                  alt="Abdul Rauf, Full Stack Web Developer"
                   className="w-full h-full object-cover object-center"
                   draggable="false"
                 />
               </div>
 
-              {/* Orbital tech icons */}
               <div className="absolute inset-0" style={{ transform: 'none' }}>
                 {techIcons.map((item, i) => (
                   <OrbitalIcon
@@ -311,15 +303,11 @@ const Hero = () => {
                 ))}
               </div>
             </div>
-
-
-
-
+          </div>
           </motion.div>
         </div>
+      </div>
 
-
-      </motion.div>
     </section>
   );
 };

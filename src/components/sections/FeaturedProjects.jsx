@@ -61,18 +61,15 @@ const ProjectInfoPanel = ({ project, cm, hovered }) => (
     className="glass-card border border-white/8 rounded-xl p-6 mb-6"
     style={{ boxShadow: hovered ? `0 20px 40px ${project.glowColor}` : 'none' }}
   >
-    {/* Header row — icon, title, status */}
+
     <div className="flex items-start justify-between mb-5">
-      <div className="flex items-center gap-3">
-        <span className="text-4xl leading-none">{project.icon}</span>
-        <div>
-          <div className="font-display font-bold text-white text-base leading-tight">
-            {project.title}
-          </div>
-          <div className={`text-xs mt-0.5 ${cm.accent}`}>Featured Project</div>
+      <div>
+        <div className="font-display font-bold text-white text-base leading-tight">
+          {project.title}
         </div>
+        <div className={`text-xs mt-0.5 ${cm.accent}`}>Featured Project</div>
       </div>
-      {/* Status badge */}
+
       <span
         className={`text-xs font-display font-semibold px-2.5 py-1 rounded-full border ${cm.statusBg}`}
       >
@@ -80,7 +77,6 @@ const ProjectInfoPanel = ({ project, cm, hovered }) => (
       </span>
     </div>
 
-    {/* Key stats grid */}
     <div className="grid grid-cols-3 gap-2 mb-5">
       {project.stats.map((stat) => (
         <div
@@ -95,7 +91,6 @@ const ProjectInfoPanel = ({ project, cm, hovered }) => (
       ))}
     </div>
 
-    {/* Architecture highlights */}
     <div>
       <div className="flex items-center gap-1.5 mb-2">
         <Zap size={11} className={cm.accent} aria-hidden="true" />
@@ -131,10 +126,9 @@ const ProjectCard = ({ project, index }) => {
       onHoverEnd={() => setHovered(false)}
       className={`relative glass-card border ${cm.border} ${cm.glow} rounded-2xl overflow-hidden transition-all duration-500 group`}
     >
-      {/* Gradient background */}
+
       <div className={`absolute inset-0 bg-gradient-to-br ${cm.gradient} opacity-50`} aria-hidden="true" />
 
-      {/* Featured badge */}
       <div className="absolute top-4 right-4 z-10">
         <div className={`flex items-center gap-1 px-2 py-1 rounded-full border ${cm.tag} text-xs font-display font-semibold`}>
           <Star size={10} aria-hidden="true" />
@@ -143,10 +137,10 @@ const ProjectCard = ({ project, index }) => {
       </div>
 
       <div className="relative z-10 grid md:grid-cols-2 gap-0">
-        {/* ── Left — project number + info + actions ── */}
+
         <div className="p-8 md:p-10 flex flex-col justify-between">
           <div>
-            {/* Project number */}
+
             <div
               className={`text-7xl font-black font-display bg-gradient-to-br ${cm.number} bg-clip-text text-transparent opacity-20 select-none mb-4`}
               aria-hidden="true"
@@ -154,15 +148,13 @@ const ProjectCard = ({ project, index }) => {
               0{index + 1}
             </div>
 
-            {/* Icon + title */}
             <div className="flex items-center gap-3 mb-3">
               <span className="text-3xl" aria-hidden="true">{project.icon}</span>
               <h3 className="text-2xl font-bold font-display text-white">{project.title}</h3>
             </div>
 
-            <p className="text-slate-400 leading-relaxed mb-6 text-sm">{project.description}</p>
+            <p className="text-slate-400 leading-relaxed mb-6 text-sm line-clamp-3 md:line-clamp-none">{project.description}</p>
 
-            {/* Key highlights */}
             <ul className="space-y-2 mb-6" aria-label="Project highlights">
               {project.highlights.map((h) => (
                 <li key={h} className="flex items-center gap-2 text-sm text-slate-300">
@@ -173,7 +165,6 @@ const ProjectCard = ({ project, index }) => {
             </ul>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-3">
             <motion.a
               href={project.github}
@@ -205,11 +196,9 @@ const ProjectCard = ({ project, index }) => {
           </div>
         </div>
 
-        {/* ── Right — info panel + tech stack ── */}
         <div className="p-8 md:p-10 flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/5">
           <ProjectInfoPanel project={project} cm={cm} hovered={hovered} />
 
-          {/* Tech stack */}
           <div>
             <p className="text-xs text-slate-500 font-display uppercase tracking-widest mb-3">
               Tech Stack
@@ -237,7 +226,7 @@ const FeaturedProjects = () => {
       <div className="relative z-10 max-w-7xl mx-auto">
         <SectionHeading
           eyebrow="Featured Work"
-          title="Projects That Define Me"
+          title="Featured Projects"
           subtitle="A showcase of my most impactful projects: each one a story of problem-solving, creativity, and technical depth."
         />
 

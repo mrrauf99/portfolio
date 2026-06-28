@@ -90,13 +90,12 @@ const About = () => {
       <div className="relative z-10 max-w-7xl mx-auto">
         <SectionHeading
           eyebrow="About Me"
-          title="Crafting Digital Experiences"
-          subtitle="I'm a Full Stack Web Developer who loves turning complex problems into elegant, efficient solutions."
+          title="Turning Complex Problems into Elegant Software."
+          subtitle="Dedicated developer with 1+ year building production software across the full stack."
         />
 
-        {/* Main about layout */}
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-          {/* Left — story */}
+
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -105,30 +104,30 @@ const About = () => {
             className="space-y-6"
           >
             <h3 className="text-2xl font-bold font-display text-white">
-              Building with <span className="gradient-text">passion</span> and precision
+              Building with <span className="gradient-text">depth</span> and precision
             </h3>
 
             <p className="text-slate-400 leading-relaxed">
-              I'm a Full Stack Web Developer with a deep passion for building modern, scalable web
-              applications that solve real-world problems. I thrive in environments where
-              creativity meets engineering, where design thinking drives technical decisions.
+              I'm a dedicated Full Stack Developer with <span className="text-white font-medium">1+ year</span> of building
+              production-ready software, spanning from multi-role publishing platforms to AI-powered detection
+              systems. I work across the entire stack so I can own features end-to-end.
             </p>
 
             <p className="text-slate-400 leading-relaxed">
-              My journey spans frontend development with <span className="text-purple-300 font-medium">React</span>,
-              backend systems with <span className="text-cyan-300 font-medium">Node.js & Express</span>,
-              and databases like <span className="text-emerald-300 font-medium">PostgreSQL & MongoDB</span>.
-              I've also ventured into machine learning and mobile development, building systems
-              that go beyond conventional web apps.
+              My stack centres on <span className="text-purple-300 font-medium">React</span>,{' '}
+              <span className="text-cyan-300 font-medium">Node.js & Express</span>, and databases like{' '}
+              <span className="text-emerald-300 font-medium">PostgreSQL & MongoDB</span>.
+              I've also shipped a Flutter mobile app with on-device ML and a scikit-learn disease
+              prediction model, because good engineers aren't afraid to go beyond their comfort zone.
             </p>
 
             <p className="text-slate-400 leading-relaxed">
-              I believe that great software is built on clean code, thoughtful architecture, and
-              relentless attention to detail. Every project I take on is an opportunity to craft
-              something that not only works, but works beautifully.
+              I care about clean architecture, readable code, and shipping things that actually work in
+              production, not just on localhost.
             </p>
 
-            <div className="flex flex-wrap gap-3 pt-2">
+
+            <div className="flex flex-wrap gap-3 pt-1">
               {['Clean Code', 'Scalable Systems', 'User-Centric Design', 'Problem Solving'].map((tag) => (
                 <span
                   key={tag}
@@ -138,19 +137,8 @@ const About = () => {
                 </span>
               ))}
             </div>
-
-            <motion.a
-              href="mailto:itxrauf99@gmail.com"
-              whileHover={{ scale: 1.03, boxShadow: '0 0 25px rgba(168, 85, 247, 0.35)' }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold font-display text-white transition-all"
-              style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)' }}
-            >
-              Let's Work Together
-            </motion.a>
           </motion.div>
 
-          {/* Right — highlights grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {highlights.map((item, i) => (
               <motion.div
@@ -173,7 +161,6 @@ const About = () => {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((stat, i) => (
             <StatCard

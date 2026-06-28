@@ -29,7 +29,6 @@ export const useAnimatedCounter = (end, duration = 2000, start = 0) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.floor(start + (end - start) * eased));
 

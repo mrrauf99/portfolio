@@ -22,7 +22,6 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      // Active section detection
       const sections = navLinks.map((l) => l.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -40,17 +39,29 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && mobileOpen) setMobileOpen(false);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [mobileOpen]);
+
   const handleNavClick = (href) => {
     setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+
+    setTimeout(() => {
+      const el = document.querySelector(href);
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }, 50);
   };
 
   return (
     <>
-      {/* Scroll progress bar */}
+
       <motion.div
         className="fixed top-0 left-0 h-0.5 z-50 origin-left"
         style={{
@@ -58,12 +69,14 @@ const Navbar = () => {
           scaleX: scrollProgress,
           background: 'linear-gradient(90deg, #7c3aed, #a855f7, #06b6d4)',
         }}
+        aria-hidden="true"
       />
 
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
+        aria-label="Primary navigation"
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
           isScrolled
             ? 'bg-[#0a0a14]/80 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.3)]'
@@ -72,21 +85,21 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
+
             <motion.a
               href="#hero"
               onClick={(e) => { e.preventDefault(); handleNavClick('#hero'); }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="flex items-center group cursor-pointer"
+              aria-label="Abdul Rauf — back to top"
             >
               <span className="text-white font-display font-semibold text-lg">
-                Abdul<span className="gradient-text"> Rauf</span>
+                Abdul <span className="gradient-text">Rauf</span>
               </span>
             </motion.a>
 
-            {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden md:flex items-center gap-8" aria-label="Site sections">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
@@ -99,23 +112,26 @@ const Navbar = () => {
               ))}
             </nav>
 
-            {/* CTA + Mobile menu */}
             <div className="flex items-center gap-3">
+
               <button
                 id="mobile-menu-toggle"
                 onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-menu"
                 className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
               >
-                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                {mobileOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile menu */}
         <AnimatePresence>
           {mobileOpen && (
             <motion.div
+              id="mobile-menu"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
@@ -140,6 +156,7 @@ const Navbar = () => {
                     {link.label}
                   </motion.a>
                 ))}
+
               </div>
             </motion.div>
           )}

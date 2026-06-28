@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Github, ArrowUpRight } from 'lucide-react';
+import { Github } from 'lucide-react';
 import SectionHeading from '../ui/SectionHeading';
 import FloatingOrbs from '../ui/FloatingOrbs';
 import { additionalProjects } from '../../data/projects';
@@ -31,46 +31,35 @@ const AdditionalProjectCard = ({ project, index }) => {
   const cm = colorMap[project.color] || colorMap.purple;
 
   return (
-    <motion.div
+    <motion.a
+      href={project.github}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`View ${project.title} on GitHub`}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-30px' }}
       transition={{ duration: 0.5, delay: (index % 6) * 0.07 }}
       whileHover={{ y: -5, scale: 1.01 }}
-      className={`glass-card border border-white/5 ${cm.hover} rounded-2xl p-6 flex flex-col gap-4 group transition-all duration-300 cursor-default`}
+      className={`glass-card border border-white/5 ${cm.hover} rounded-2xl p-6 flex flex-col gap-4 group transition-all duration-300`}
     >
-      {/* Header */}
+
       <div className="flex items-start justify-between">
         <div className={`w-11 h-11 rounded-xl border flex items-center justify-center text-xl ${cm.icon} group-hover:scale-105 transition-transform`}>
           {project.icon}
         </div>
-        <a
-          href={project.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          id={`project-github-${project.id}`}
-          onClick={(e) => e.stopPropagation()}
-          className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-all duration-200 opacity-0 group-hover:opacity-100"
-        >
-          <Github size={16} />
-        </a>
-      </div>
-
-      {/* Content */}
-      <div className="flex-1">
-        <div className="flex items-center gap-1.5 mb-2">
-          <h3 className="font-display font-bold text-white text-sm leading-tight group-hover:text-purple-200 transition-colors">
-            {project.title}
-          </h3>
-          <ArrowUpRight
-            size={14}
-            className="text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
-          />
+        <div className="p-2 rounded-lg text-slate-500 group-hover:text-white group-hover:bg-white/5 transition-all duration-200">
+          <Github size={16} aria-hidden="true" />
         </div>
-        <p className="text-slate-400 text-xs leading-relaxed">{project.description}</p>
       </div>
 
-      {/* Tech stack */}
+      <div className="flex-1">
+        <h3 className="font-display font-bold text-white text-sm leading-tight mb-2 group-hover:text-purple-200 transition-colors">
+          {project.title}
+        </h3>
+        <p className="text-slate-400 text-xs leading-relaxed line-clamp-2 md:line-clamp-none">{project.description}</p>
+      </div>
+
       <div className="flex flex-wrap gap-1.5">
         {project.tech.map((tech) => (
           <span
@@ -81,7 +70,7 @@ const AdditionalProjectCard = ({ project, index }) => {
           </span>
         ))}
       </div>
-    </motion.div>
+    </motion.a>
   );
 };
 
@@ -89,22 +78,21 @@ const AdditionalProjects = () => {
   return (
     <section id="other-projects" className="relative section-padding overflow-hidden bg-[#0a0a14]">
       <FloatingOrbs count={2} />
-      <div className="dot-pattern absolute inset-0 opacity-15" />
+      <div className="dot-pattern absolute inset-0 opacity-15" aria-hidden="true" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <SectionHeading
           eyebrow="Other Projects"
           title="More Things I've Built"
-          subtitle="A curated collection of projects spanning games, tools, systems, and experiments: each one a learning milestone."
+          subtitle="A curated collection of projects spanning desktop systems, tools, and web experiments, each one a learning milestone."
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {additionalProjects.map((project, index) => (
             <AdditionalProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -119,9 +107,8 @@ const AdditionalProjects = () => {
             id="see-all-projects-link"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/10 text-slate-300 hover:text-white hover:border-purple-500/30 hover:bg-purple-500/5 transition-all duration-200 font-display font-medium text-sm"
           >
-            <Github size={16} />
+            <Github size={16} aria-hidden="true" />
             See all repositories on GitHub
-            <ArrowUpRight size={14} />
           </a>
         </motion.div>
       </div>

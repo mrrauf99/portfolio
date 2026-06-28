@@ -63,18 +63,16 @@ const SkillCard = ({ skill, categoryColor, index }) => {
       whileHover={{ y: -4, scale: 1.02 }}
       className={`glass-card border border-white/5 p-5 rounded-2xl transition-all duration-300 cursor-default ${cm.border}`}
     >
-      {/* Icon */}
+
       <div className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-4 ${cm.icon}`}>
         <skill.icon style={{ color: skill.color, fontSize: '24px' }} aria-hidden="true" />
       </div>
 
-      {/* Name + proficiency label */}
       <div className="flex items-center justify-between mb-3">
         <span className="font-display font-semibold text-white text-sm">{skill.name}</span>
         <span className="text-xs text-slate-400 font-display">{label}</span>
       </div>
 
-      {/* Progress bar */}
       <div className="h-1.5 bg-white/5 rounded-full overflow-hidden" role="progressbar" aria-valuenow={skill.level} aria-valuemin={0} aria-valuemax={100} aria-label={`${skill.name} proficiency ${skill.level}%`}>
         <motion.div
           initial={{ width: 0 }}
@@ -93,7 +91,6 @@ const Skills = () => {
 
   const active = skillCategories.find((c) => c.id === activeCategory);
 
-  // Deduplicate skills across all categories for the summary strip
   const allUnique = skillCategories
     .flatMap((c) => c.skills)
     .filter((s, i, arr) => arr.findIndex((x) => x.name === s.name) === i);
@@ -106,11 +103,10 @@ const Skills = () => {
       <div className="relative z-10 max-w-7xl mx-auto">
         <SectionHeading
           eyebrow="Skills"
-          title="My Tech Arsenal"
+          title="Technical Skills"
           subtitle="Technologies and tools I use to bring ideas from concept to production."
         />
 
-        {/* Category tabs */}
         <div className="flex flex-wrap justify-center gap-3 mb-12" role="tablist" aria-label="Skill categories">
           {skillCategories.map((cat) => {
             const cm = categoryColorMap[cat.color];
@@ -138,7 +134,6 @@ const Skills = () => {
           })}
         </div>
 
-        {/* Skill cards grid */}
         <AnimatePresence mode="wait">
           {active && (
             <motion.div
@@ -164,7 +159,6 @@ const Skills = () => {
           )}
         </AnimatePresence>
 
-        {/* All technologies summary strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -177,7 +171,7 @@ const Skills = () => {
           </p>
           <div className="flex flex-wrap gap-2.5 justify-center">
             {allUnique.map((skill) => {
-              // Find which category this skill belongs to for color
+
               const cat = skillCategories.find((c) =>
                 c.skills.some((s) => s.name === skill.name)
               );

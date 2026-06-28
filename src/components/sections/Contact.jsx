@@ -1,43 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 import SectionHeading from '../ui/SectionHeading';
 import FloatingOrbs from '../ui/FloatingOrbs';
 
-const contactInfo = [
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'itxrauf99@gmail.com',
-    href: 'mailto:itxrauf99@gmail.com',
-    color: 'purple',
-  },
-  {
-    icon: Github,
-    label: 'GitHub',
-    value: 'github.com/mrrauf99',
-    href: 'https://github.com/mrrauf99',
-    color: 'slate',
-  },
-  {
-    icon: Linkedin,
-    label: 'LinkedIn',
-    value: 'abdulrauf-dev',
-    href: 'https://www.linkedin.com/in/abdulrauf-dev/',
-    color: 'blue',
-  },
-];
-
-const contactColorMap = {
-  purple: 'bg-purple-500/10 border-purple-500/20 text-purple-400 hover:border-purple-500/40',
-  slate: 'bg-white/5 border-white/10 text-slate-300 hover:border-white/20',
-  blue: 'bg-blue-500/10 border-blue-500/20 text-blue-400 hover:border-blue-500/40',
-};
-
-// ─── EmailJS credentials ───────────────────────────────────────────────────
-const EMAILJS_SERVICE_ID = 'service_znro6i9';
-const EMAILJS_TEMPLATE_ID = 'template_vzxej7n';
-const EMAILJS_PUBLIC_KEY = 'KkKYlwOgHF5swQpaS';
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 
 const Contact = () => {
@@ -147,86 +116,22 @@ const Contact = () => {
   return (
     <section id="contact" className="relative section-padding overflow-hidden bg-[#080812]">
       <FloatingOrbs count={3} />
-      <div className="dot-pattern absolute inset-0 opacity-15" />
+      <div className="dot-pattern absolute inset-0 opacity-15" aria-hidden="true" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <SectionHeading
           eyebrow="Get In Touch"
-          title="Let's Build Something"
+          title="Let's Work Together"
           subtitle="Whether you have a project in mind, an opportunity to share, or just want to say hello, I'm always open to a conversation."
         />
 
-        <div className="grid lg:grid-cols-2 gap-10">
-          {/* Left — contact info */}
+        <div className="max-w-xl mx-auto mt-10">
+
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="space-y-6"
-          >
-            <div className="glass-card border border-white/5 rounded-2xl p-8">
-              <h3 className="font-display font-bold text-white text-xl mb-2">Get In Touch</h3>
-              <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                I'm currently open to <span className="text-purple-300">internships</span>,{' '}
-                <span className="text-cyan-300">junior–mid full-stack roles</span>, and{' '}
-                <span className="text-emerald-300">freelance projects</span>. Let's discuss how I can
-                contribute to your team or project.
-              </p>
-
-              <div className="space-y-3">
-                {contactInfo.map((info, i) => (
-                  <motion.a
-                    key={info.label}
-                    href={info.href}
-                    target={info.href.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    whileHover={{ x: 4 }}
-                    className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 group ${contactColorMap[info.color]}`}
-                  >
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/5">
-                      <info.icon size={18} />
-                    </div>
-                    <div>
-                      <div className="text-xs text-slate-500 font-display">{info.label}</div>
-                      <div className="text-sm font-semibold text-white group-hover:text-inherit">{info.value}</div>
-                    </div>
-                  </motion.a>
-                ))}
-              </div>
-            </div>
-
-            {/* Availability card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="glass-card border border-emerald-500/15 rounded-2xl p-6"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="font-display font-semibold text-emerald-300 text-sm">
-                  Available for Work
-                </span>
-              </div>
-              <p className="text-slate-400 text-sm">
-                Actively looking for opportunities. Response time is typically within{' '}
-                <span className="text-white font-medium">24 hours</span>.
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* Right — contact form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="glass-card border border-white/5 rounded-2xl p-8">
               {submitted ? (
@@ -256,7 +161,7 @@ const Contact = () => {
               ) : (
                 <form onSubmit={handleSubmit} noValidate className="space-y-5">
                   <div className="grid sm:grid-cols-2 gap-4">
-                    {/* Name */}
+
                     <div className="space-y-1.5">
                       <label htmlFor="contact-name" className="text-sm text-slate-400 font-display">
                         Name
@@ -279,7 +184,6 @@ const Contact = () => {
                       )}
                     </div>
 
-                    {/* Email */}
                     <div className="space-y-1.5">
                       <label htmlFor="contact-email" className="text-sm text-slate-400 font-display">
                         Email
@@ -303,7 +207,6 @@ const Contact = () => {
                     </div>
                   </div>
 
-                  {/* Subject */}
                   <div className="space-y-1.5">
                     <label htmlFor="contact-subject" className="text-sm text-slate-400 font-display">
                       Subject
@@ -326,7 +229,6 @@ const Contact = () => {
                       )}
                   </div>
 
-                  {/* Message */}
                   <div className="space-y-1.5">
                     <label htmlFor="contact-message" className="text-sm text-slate-400 font-display">
                       Message
@@ -349,7 +251,6 @@ const Contact = () => {
                       )}
                   </div>
 
-                  {/* Error message */}
                   {error && (
                     <motion.div
                       initial={{ opacity: 0, y: -8 }}
@@ -361,7 +262,6 @@ const Contact = () => {
                     </motion.div>
                   )}
 
-                  {/* Submit */}
                   <motion.button
                     type="submit"
                     id="contact-submit-btn"
